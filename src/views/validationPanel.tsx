@@ -66,6 +66,7 @@ export const ValidationPanel: FunctionComponent<ValidationProps> = ({
   ]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const timeout = setTimeout(() => {
       if (count < validationItems.length) {
         const items = validationItems;
@@ -96,6 +97,7 @@ export const ValidationPanel: FunctionComponent<ValidationProps> = ({
         setIsLoading(false);
       }
     }, 2000)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count])
 
   const color = (item: any) => {
