@@ -1,38 +1,24 @@
-.App {
-  text-align: center;
+.crawler-onboarding .euiButtonEmpty.crawlerPrependButton {
+  min-width: 6rem;
+  /* This removes the amsterdam border radius for the appended buttons */
+  /* this rule should be removed after updating EUI to the latest version */
+  border-radius: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.crawler-onboarding__panel {
+  overflow: hidden;
+  padding-bottom: 4rem;
+  background-image: url('./images/bg-crawler-onboarding.png');
+  background-size: 45%;
+  background-repeat: no-repeat;
+  background-position: right -2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.crawler-onboarding__inner {
+  width: 50rem;
+  padding: 2rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.crawler-onboarding__heading > * {
+  margin: 0;
 }
