@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   EuiButton,
+  EuiCode,
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
@@ -12,10 +13,15 @@ import {
   EuiTitle
 } from '@elastic/eui';
 import { ValidationPanel } from './validationPanel';
+import { parseDomain } from './domainParser';
 
 export const ValidationView = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [failure, setFailure] = useState('');
+  const [domain, setDomain] = useState('');
+  const [entryPoint, setEntryPoint] = useState('');
+  const [invalidMessage, setInvalidMessage] = useState('');
+  const [showErrors, setShowErrors] = useState(false);
 
   const failureOptions = [
     { value: '', text: 'No failures' },
@@ -37,6 +43,19 @@ export const ValidationView = () => {
         return <ValidationPanel failContent />
       default:
         return <ValidationPanel />
+    }
+  }
+
+  const handleAddDomain = () => {
+    const domainObject = parseDomain(domain);
+    if (domainObject.error === '') {
+      setIsVisible(true);
+      setShowErrors(false);
+      setEntryPoint(domainObject.entryPoint);
+      setDomain(domainObject.protocol + domainObject.domain);
+    } else {
+      setShowErrors(true);
+      setInvalidMessage(domainObject.error)
     }
   }
 
@@ -62,12 +81,32 @@ export const ValidationView = () => {
         <div style={{ padding: '0 2rem' }}>
           <EuiFlexGroup>
             <EuiFlexItem>
-              <EuiFormRow fullWidth label="Domain URL" helpText="Domain URLs require a protocol and cannot contain any paths">
-                <EuiFieldText fullWidth placeholder="https://mydomain.com" />
+              <EuiFormRow
+                fullWidth
+                label="Domain URL"
+                helpText="Domain URLs require a protocol and cannot contain any paths"
+                isInvalid={showErrors}
+                error={showErrors && invalidMessage}
+              >
+                <EuiFieldText
+                  fullWidth
+                  placeholder="https://mydomain.com"
+                  value={domain}
+                  isInvalid={showErrors}
+                  onChange={(event) => setDomain(event.target.value)}
+                />
               </EuiFormRow>
+              {entryPoint !== '' && entryPoint !== '/' ? (
+                <>
+                  <EuiSpacer />
+                  <EuiText size="s">
+                    <p><strong>Web Crawler entry point has been set as</strong> <EuiCode>{entryPoint}</EuiCode></p>
+                  </EuiText>
+                </>
+              ) : null}
             </EuiFlexItem>
             <EuiFlexItem grow={false} style={{ paddingTop: '1.5rem' }}>
-              <EuiButton onClick={() => setIsVisible(true)} fill>Add Domain</EuiButton>
+              <EuiButton onClick={() => handleAddDomain()} fill>Add Domain</EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>
           {isVisible && <ValidationDisplay />}
